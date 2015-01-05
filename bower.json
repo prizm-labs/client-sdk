@@ -1,0 +1,31 @@
+{
+  "name": "prizm-client",
+  "version": "0.0.0",
+  "homepage": "https://github.com/prizm-labs/client-sdk",
+  "authors": [
+    "Michael Garrido <michael.a.garrido@gmail.com>"
+  ],
+  "description": "Client SDK for multi-screen apps and games",
+  "main": "package.js",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals"
+  ],
+  "keywords": [
+    "prizm",
+    "client",
+    "sdk",
+    "multiscreen",
+    "games"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
