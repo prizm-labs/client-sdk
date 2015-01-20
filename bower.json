@@ -23,7 +23,8 @@
     "asteroid": "~0.6.1",
     "sockjs-client": "~0.3.4",
     "lil-uuid": "~0.1.0",
-    "store": "~2.1.6"
+    "store": "~2.1.6",
+    "lodash": "~2.4.1"
   },
   "license": "MIT",
   "private": true,
