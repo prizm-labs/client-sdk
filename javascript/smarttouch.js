@@ -7,6 +7,15 @@ SmartTouch = function(id, x, y){
   this.y = y;
   this.clean = false;
   this.state = this.States.began;
+
+  // this.identifier = identifier;
+  // this.target = target;
+  // this.clientX = pos.clientX + deltaX;
+  // this.clientY = pos.clientY + deltaY;
+  // this.screenX = pos.screenX + deltaX;
+  // this.screenY = pos.screenY + deltaY;
+  // this.pageX = pos.pageX + deltaX;
+  // this.pageY = pos.pageY + deltaY;
 };
 
 SmartTouch.prototype = {
@@ -14,7 +23,8 @@ SmartTouch.prototype = {
   States: {
     began: 0,
     moved: 1,
-    ended: 2
+    fixed: 2,
+    ended: 3
   }
 };
 
@@ -102,9 +112,15 @@ SmartTouchClient = {
   updateTouch: function(id, x, y) {
     var touch = this.touches[id];
 
-    touch.x = x;
-    touch.y = y;
-    touch.state = this.States.moved
+    if (touch.x!==x && touch.y!==y) {
+      touch.x = x;
+      touch.y = y;
+      touch.state = touch.States.moved;
+    } else {
+      touch.state = touch.States.fixed;
+    }
+
+    touch.clean = false;
   },
 
   fireEvents: function(){
@@ -114,14 +130,17 @@ SmartTouchClient = {
   fireEvent: function(touch){
     switch (touch.state) {
       case touch.States.began:
+        this.delegate.windowEvent('touchesBegan',touch);
         this.delegate.event('touchesBegan',touch);
         touch.clean = true;
         break;
       case touch.States.moved:
+        this.delegate.windowEvent('touchesMoved',touch);
         this.delegate.event('touchesMoved',touch);
         touch.clean = true;
         break;
       case touch.States.ended:
+        this.delegate.windowEvent('touchesEnded',touch);
         this.delegate.event('touchesEnded',touch);
         this.touches = _.omit(this.touches, touch);
         break;
@@ -141,7 +160,21 @@ SmartTouchDelegate = {
     //target.view.addEventListener("touchend", this.onTouchEnd.bind(this), true);
     //target.view.addEventListener("touchmove", this.onTouchMove.bind(this), true);
   },
-  event: function(state, touch){
+
+  // Emulate Touch Events into entire browser window
+
+  windowEvent: function(state, touch) {
+    if (this.interactionManager!=null) return;
+
+
+
+  },
+
+  // Emulate Touch Events into PixiJS view
+  // http://hammerjs.github.io/touch-emulator/
+  event: function(state, touch) {
+
+    if (this.interactionManager==null) return;
 
     // wrap event as mobile touch event
     // http://www.goodboydigital.com/pixijs/docs/files/pixi_InteractionManager.js.html
