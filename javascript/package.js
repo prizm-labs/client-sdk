@@ -22,6 +22,7 @@ Astral = {
 
     // Get all stored values
     store.getAll().user.name == 'marcus'
+
   },
 
   restoreSession: function(){
@@ -39,6 +40,26 @@ Astral = {
       console.log(e.message);  // 'Default Message'
     }
     
+  },
+
+  // Subscribe to all nodes in session
+  subscribe: function(){
+    this.Server.subscribe('nodes');
+  },
+
+  // Bind reactive document to game node
+  bind: function(documentId, node, changeHandler){
+
+    var nodes = this.Server.getCollection("nodes");
+
+    var documentQuery = tasks.reactiveQuery({id: documentId});
+    // Log the array of results
+    console.log(documentQuery.result);
+    // Listen for changes
+    documentQuery.on("change", function (id) {
+      console.log(id, documentQuery.result);
+      changeHandler(documentQuery.result);
+    });
   },
 
   loginWithFacebook: function(){
